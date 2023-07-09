@@ -8,9 +8,33 @@ def generate_random_gender():
     return random.choice(['Male', 'Female'])
 
 def generate_random_name(gender):
-    male_first_names = ['Hiroshi', 'Kenji', 'Takeshi', 'Daiki']
-    female_first_names = ['Yuki', 'Sakura', 'Naoko', 'Ayumi', 'Yui', 'Riko']
-    last_names = ['Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Nakamura', 'Kobayashi', 'Yamamoto', 'Kato']
+    # 50 Japanese male first names
+    male_first_names = [
+        'Hiroshi', 'Kenji', 'Takeshi', 'Daiki', 'Yusuke', 'Yudai', 'Shota', 'Ryota', 'Kazuki', 'Kenta', 
+        'Yoshiro', 'Nobu', 'Issei', 'Kosuke', 'Yuji', 'Kohei', 'Toshi', 'Sora', 'Haruki', 'Makoto', 
+        'Ryosuke', 'Takuya', 'Shinji', 'Riku', 'Masato', 'Junichi', 'Satoshi', 'Daisuke', 'Hideo', 'Ryoma', 
+        'Yuya', 'Tomohiro', 'Naoki', 'Manabu', 'Hidetoshi', 'Tetsuya', 'Masahiro', 'Noriyuki', 'Tatsuya', 'Toru', 
+        'Shinobu', 'Yutaka', 'Keiichi', 'Hiroaki', 'Fumio', 'Ryoichi', 'Tadashi', 'Minoru', 'Akio', 'Yasushi'
+    ]
+
+    # 50 Japanese female first names
+    female_first_names = [
+        'Yuki', 'Sakura', 'Naoko', 'Ayumi', 'Yui', 'Riko', 'Mai', 'Akiko', 'Haruka', 'Aiko', 
+        'Rina', 'Miho', 'Kana', 'Eri', 'Sayaka', 'Yuka', 'Misaki', 'Keiko', 'Manami', 'Saki', 
+        'Tomomi', 'Maki', 'Natsuki', 'Yoshiko', 'Asuka', 'Risa', 'Mami', 'Hitomi', 'Kaori', 'Yuriko', 
+        'Emi', 'Chie', 'Nanami', 'Noriko', 'Rei', 'Sachiko', 'Ayano', 'Megumi', 'Yoko', 'Kumiko', 
+        'Miki', 'Aya', 'Mari', 'Nozomi', 'Shizuka', 'Airi', 'Yumi', 'Hikari', 'Kazumi', 'Mariko'
+    ]
+
+    # 50 Japanese last names
+    last_names = [
+        'Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Nakamura', 'Kobayashi', 'Yamamoto', 'Kato', 
+        'Yoshida', 'Yamada', 'Sasaki', 'Yamaguchi', 'Saito', 'Matsumoto', 'Inoue', 'Kimura', 'Hayashi', 'Shimizu', 
+        'Yamazaki', 'Mori', 'Abe', 'Ikeda', 'Hashimoto', 'Ishikawa', 'Yamashita', 'Ogawa', 'Ishii', 'Hasegawa', 
+        'Maeda', 'Fujita', 'Okada', 'Goto', 'Kondo', 'Ishida', 'Ueda', 'Miyazaki', 'Endo', 'Fujii', 
+        'Matsuda', 'Asano', 'Noguchi', 'Murakami', 'Ono', 'Takeuchi', 'Miyamoto', 'Fukuda', 'Uchida', 'Sakai'
+    ]
+
     if gender == 'Male':
         return random.choice(male_first_names) + " " + random.choice(last_names)
     else:
@@ -20,11 +44,32 @@ def generate_random_age():
     return random.randint(15, 65)
 
 def generate_random_email(name):
-    domains = ['example.co.jp', 'mail.jp', 'webmail.jp']
+    # 50 fictional Japanese domain names
+    domains = [
+        'example.co.jp', 'mail.jp', 'webmail.jp', 'tokyotech.jp', 'sushilove.jp', 
+        'mangamania.jp', 'animerama.jp', 'nihongolearn.jp', 'japanesecrafts.jp', 'bentoexpress.jp', 
+        'kimonokawaii.jp', 'techkyoto.jp', 'jpopwave.jp', 'nihongobridge.jp', 'japanesesnacks.jp', 
+        'origamiart.jp', 'samuraicode.jp', 'nihongotalk.jp', 'greenteashop.jp', 'tunaclub.jp', 
+        'animegarden.jp', 'ninjalifestyle.jp', 'otakulife.jp', 'ramenking.jp', 'bonsaiworld.jp', 
+        'japanesetech.jp', 'gameninja.jp', 'mochimagic.jp', 'toriirestaurant.jp', 'kabukiview.jp', 
+        'cherryblossom.jp', 'tanukitown.jp', 'kaijufun.jp', 'virtualtokyo.jp', 'totoroshop.jp', 
+        'matchamania.jp', 'sakesommelier.jp', 'shibainu.jp', 'otakufan.jp', 'yakisoba.jp', 
+        'ikebanadreams.jp', 'haikulove.jp', 'robotmuseum.jp', 'karaokeparty.jp', 'yokaiyarn.jp', 
+        'onsenspa.jp', 'fujisanart.jp', 'sumoworld.jp', 'sushimaster.jp', 'haikuhaven.jp'
+    ]
+
     return name.lower().replace(' ', '.') + '@' + random.choice(domains)
 
 def generate_random_city():
-    cities = ['Tokyo', 'Osaka', 'Nagoya', 'Sapporo', 'Fukuoka', 'Kobe', 'Yokohama', 'Kyoto', 'Hiroshima', 'Sendai']
+    # 50 Japanese city names
+    cities = [
+        'Tokyo', 'Osaka', 'Nagoya', 'Sapporo', 'Fukuoka', 'Kobe', 'Yokohama', 'Kyoto', 'Hiroshima', 'Sendai', 
+        'Naha', 'Kawasaki', 'Sakai', 'Kumamoto', 'Okayama', 'Hamamatsu', 'Hachioji', 'Niigata', 'Fukushima', 'Kanazawa', 
+        'Nagasaki', 'Miyazaki', 'Matsuyama', 'Shizuoka', 'Akita', 'Chiba', 'Toyama', 'Nara', 'Yokosuka', 'Maebashi', 
+        'Mito', 'Utsunomiya', 'Oita', 'Kitakyushu', 'Takamatsu', 'Kochi', 'Tottori', 'Matsue', 'Kagoshima', 'Asahikawa', 
+        'Yamagata', 'Toyohashi', 'Kurashiki', 'Yamaguchi', 'Iwaki', 'Koriyama', 'Wakayama', 'Sasebo', 'Hakodate', 'Takasaki'
+    ]
+
     return random.choice(cities)
 
 def generate_random_employee_status():
