@@ -2,11 +2,15 @@
 
 import sqlite3
 import random
+import datetime
 
 def generate_random_name():
     first_names = ['Yuki', 'Hiroshi', 'Sakura', 'Naoko', 'Kenji', 'Ayumi', 'Takeshi', 'Yui', 'Daiki', 'Riko']
     last_names = ['Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Nakamura', 'Kobayashi', 'Yamamoto', 'Kato']
     return random.choice(first_names) + " " + random.choice(last_names)
+
+def generate_random_age():
+    return random.randint(15, 65)
 
 def generate_random_email(name):
     domains = ['example.co.jp', 'mail.jp', 'webmail.jp']
@@ -15,6 +19,24 @@ def generate_random_email(name):
 def generate_random_city():
     cities = ['Tokyo', 'Osaka', 'Nagoya', 'Sapporo', 'Fukuoka', 'Kobe', 'Yokohama', 'Kyoto', 'Hiroshima', 'Sendai']
     return random.choice(cities)
+
+def generate_random_employee_status():
+    return random.choice([True, False])
+
+# Helper function to generate 4-digit sections for random phone numbers
+def generate_random_four_digits():
+    return ''.join(str(random.randint(0, 9)) for _ in range(4))
+
+def generate_random_phone_number():
+    return f"080-{generate_random_four_digits()}-{generate_random_four_digits()}"  # Japanese phone number format (assumes only mobile phone numbers, all starting with 080)
+
+def generate_random_join_date():
+    start_date = datetime.date(2000, 1, 1)
+    end_date = datetime.date.today()
+    time_between_dates = end_date - start_date
+    random_number_of_days = random.randrange(time_between_dates.days)
+    random_date = start_date + datetime.timedelta(days=random_number_of_days)
+    return random_date.strftime("%Y-%m-%d")
 
 def create_table(cursor):
     # Delete the table if it exists
@@ -27,27 +49,31 @@ def create_table(cursor):
             age INTEGER,
             email TEXT,
             city TEXT,
-            is_employee BOOLEAN
-            );"""
-    )
+            is_employee BOOLEAN,
+            phone_number TEXT,
+            join_date TEXT
+            );
+    """)
 
 def insert_random_users(cursor, num_users):
     user_data = []
 
     for _ in range(num_users):
         name = generate_random_name()
-        age = random.randint(15, 65)
+        age = generate_random_age()
         email = generate_random_email(name)
         city = generate_random_city()
-        is_employee = random.choice([True, False])
+        is_employee = generate_random_employee_status()
+        phone_number = generate_random_phone_number()
+        join_date = generate_random_join_date()
 
-        user_data.append((name, age, email, city, is_employee))
+        user_data.append((name, age, email, city, is_employee, phone_number, join_date))
 
     # Insert data in a single batch using the executemany() method
     cursor.executemany("""
-        INSERT INTO users (name, age, email, city, is_employee)
-        VALUES (?, ?, ?, ?, ?);""", user_data
-    )
+        INSERT INTO users (name, age, email, city, is_employee, phone_number, join_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    """, user_data)
 
 def main():
     # Connect to the database (or create one if it doesn't exist)
