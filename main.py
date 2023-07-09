@@ -26,7 +26,7 @@ connection = sqlite3.connect('test_database.db')
 cursor = connection.cursor()
 
 # Delete the table if it exists
-cursor.execute("DROP TABLE IF EXISTS users")
+cursor.execute("DROP TABLE IF EXISTS users;")
 
 # Create a table
 cursor.execute("""
@@ -40,24 +40,29 @@ cursor.execute("""
         );"""
 )
 
-# Insert a large set of random data
-for _ in range(100):  # Insert 100 random users
+# Generate data for several thousand users
+user_data = []
+
+for _ in range(5000):  # Insert 5000 random users
     name = generate_random_name()
     age = random.randint(15, 65)
     email = generate_random_email(name)
     city = generate_random_city()
     is_employee = random.choice([True, False])
 
-    cursor.execute("""
-        INSERT INTO users (name, age, email, city, is_employee)
-        VALUES (?, ?, ?, ?, ?);""", (name, age, email, city, is_employee)
-    )
+    user_data.append((name, age, email, city, is_employee))
+
+# Insert data in a single batch using the executemany() method
+cursor.executemany("""
+    INSERT INTO users (name, age, email, city, is_employee)
+    VALUES (?, ?, ?, ?, ?);""", user_data
+)
 
 # Commit (save) changes
 connection.commit()
 
 # Retrieve data
-cursor.execute("SELECT * FROM users")
+cursor.execute("SELECT * FROM users;")
 rows = cursor.fetchall()
 
 # Display retrieved data
