@@ -75,6 +75,29 @@ def main():
         print(row)
     print()
 
+    """
+    Execute a more complex SQL query to do the following:
+    - display the names and emails of users who are employees, aged between 25 and 30, and are living in either Tokyo or Osaka
+    - order the results by city in ascending order and then by age in descending order
+    """ 
+    cursor.execute("""
+        SELECT name, email
+        FROM users
+        WHERE is_employee = 1
+            AND age BETWEEN 25 AND 30
+            AND city IN ('Tokyo', 'Osaka')
+        ORDER BY city ASC, age DESC
+    """)
+
+    # Fetch the results
+    results = cursor.fetchall()
+
+    # Display the results
+    print("Names and emails of employees aged between 25 and 30, living in Tokyo or Osaka:\n")
+    for row in results:
+        print(row)
+    print()
+
     # Close the connection
     connection.close()
 
