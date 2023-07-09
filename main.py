@@ -4,17 +4,17 @@ import sqlite3
 import random
 import datetime
 
-def generate_random_name_and_gender():
-    """
-    Assumes that gender can be differentiated based on first name. In a real-world application this is not possible, and the user should be asked to provide the gender information directly, possibly from a more comprehensive list of choices.
-    """
+def generate_random_gender():
+    return random.choice(['Male', 'Female'])
+
+def generate_random_name(gender):
     male_first_names = ['Hiroshi', 'Kenji', 'Takeshi', 'Daiki']
     female_first_names = ['Yuki', 'Sakura', 'Naoko', 'Ayumi', 'Yui', 'Riko']
     last_names = ['Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Nakamura', 'Kobayashi', 'Yamamoto', 'Kato']
-    if random.choice([True, False]):  # Random gender selection
-        return random.choice(male_first_names) + " " + random.choice(last_names), "Male"
+    if gender == 'Male':
+        return random.choice(male_first_names) + " " + random.choice(last_names)
     else:
-        return random.choice(female_first_names) + " " + random.choice(last_names), "Female"
+        return random.choice(female_first_names) + " " + random.choice(last_names)
 
 def generate_random_age():
     return random.randint(15, 65)
@@ -68,7 +68,8 @@ def insert_random_users(cursor, num_users):
     user_data = []
 
     for _ in range(num_users):
-        name, gender = generate_random_name_and_gender()
+        gender = generate_random_gender()
+        name = generate_random_name(gender)
         age = generate_random_age()
         email = generate_random_email(name)
         city = generate_random_city()
