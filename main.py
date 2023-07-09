@@ -7,8 +7,17 @@ import random
 def generate_random_name():
     first_names = ['Yuki', 'Hiroshi', 'Sakura', 'Naoko', 'Kenji', 'Ayumi', 'Takeshi', 'Yui', 'Daiki', 'Riko']
     last_names = ['Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Nakamura', 'Kobayashi', 'Yamamoto', 'Kato']
-    
     return random.choice(first_names) + " " + random.choice(last_names)
+
+# Function to generate a random email
+def generate_random_email(name):
+    domains = ['example.co.jp', 'mail.jp', 'webmail.jp']
+    return name.lower().replace(' ', '.') + '@' + random.choice(domains)
+
+# Function to generate a random city
+def generate_random_city():
+    cities = ['Tokyo', 'Osaka', 'Nagoya', 'Sapporo', 'Fukuoka', 'Kobe', 'Yokohama', 'Kyoto', 'Hiroshima', 'Sendai']
+    return random.choice(cities)
 
 # Connect to the database (or create one if it doesn't exist)
 connection = sqlite3.connect('test_database.db')
@@ -24,15 +33,25 @@ cursor.execute("""
     CREATE TABLE users (
         id INTEGER PRIMARY KEY,
         name TEXT,
-        age INTEGER
-    );"""
+        age INTEGER,
+        email TEXT,
+        city TEXT,
+        is_employee BOOLEAN
+        );"""
 )
 
 # Insert a large set of random data
 for _ in range(100):  # Insert 100 random users
     name = generate_random_name()
     age = random.randint(15, 65)
-    cursor.execute("INSERT INTO users (name, age) VALUES (?, ?)", (name, age))
+    email = generate_random_email(name)
+    city = generate_random_city()
+    is_employee = random.choice([True, False])
+
+    cursor.execute("""
+        INSERT INTO users (name, age, email, city, is_employee)
+        VALUES (?, ?, ?, ?, ?);""", (name, age, email, city, is_employee)
+    )
 
 # Commit (save) changes
 connection.commit()
