@@ -3,6 +3,9 @@
 import sqlite3
 import random
 import datetime
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def generate_random_gender():
     return random.choice(['Male', 'Female'])
@@ -80,7 +83,8 @@ def generate_random_four_digits():
     return ''.join(str(random.randint(0, 9)) for _ in range(4))
 
 def generate_random_phone_number():
-    return f"080-{generate_random_four_digits()}-{generate_random_four_digits()}"  # Japanese phone number format (assumes only mobile phone numbers, all starting with 080)
+    # Japanese phone number format (assumes only mobile phone numbers, all starting with 080)
+    return f"080-{generate_random_four_digits()}-{generate_random_four_digits()}"
 
 def generate_random_join_date():
     start_date = datetime.date(2000, 1, 1)
@@ -178,6 +182,38 @@ def main():
     for row in results:
         print(row)
     print()
+
+    # Query to get the number of users in each city
+    query = """
+    SELECT city, COUNT(*) as num_users
+    FROM users
+    GROUP BY city
+    ORDER BY num_users DESC
+    LIMIT 5;
+    """
+
+    # Read the data into a pandas DataFrame
+    data = pd.read_sql_query(query, connection)
+
+    # Plot the data using Matplotlib
+    data.plot(kind='bar', x='city', y='num_users', legend=None)
+    plt.xlabel('City')
+    plt.ylabel('Number of Users')
+    plt.title('Top 5 Cities by Number of Users')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Show the plot
+    plt.show()
+
+    # Plot the data using Seaborn
+    sns.set_theme(style="whitegrid")
+    ax = sns.barplot(x='city', y='num_users', data=data)
+    ax.set(xlabel='City', ylabel='Number of Users', title='Top 5 Cities by Number of Users')
+    sns.despine()
+
+    # Show the plot
+    plt.show()
 
     # Close the connection
     connection.close()
