@@ -4,10 +4,17 @@ import sqlite3
 import random
 import datetime
 
-def generate_random_name():
-    first_names = ['Yuki', 'Hiroshi', 'Sakura', 'Naoko', 'Kenji', 'Ayumi', 'Takeshi', 'Yui', 'Daiki', 'Riko']
+def generate_random_name_and_gender():
+    """
+    Assumes that gender can be differentiated based on first name. In a real-world application this is not possible, and the user should be asked to provide the gender information directly, possibly from a more comprehensive list of choices.
+    """
+    male_first_names = ['Hiroshi', 'Kenji', 'Takeshi', 'Daiki']
+    female_first_names = ['Yuki', 'Sakura', 'Naoko', 'Ayumi', 'Yui', 'Riko']
     last_names = ['Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Nakamura', 'Kobayashi', 'Yamamoto', 'Kato']
-    return random.choice(first_names) + " " + random.choice(last_names)
+    if random.choice([True, False]):  # Random gender selection
+        return random.choice(male_first_names) + " " + random.choice(last_names), "Male"
+    else:
+        return random.choice(female_first_names) + " " + random.choice(last_names), "Female"
 
 def generate_random_age():
     return random.randint(15, 65)
@@ -42,11 +49,13 @@ def create_table(cursor):
     # Delete the table if it exists
     cursor.execute("DROP TABLE IF EXISTS users;")
     # Create a table
+    # TODO Arrange table fields in more logical order
     cursor.execute("""
         CREATE TABLE users (
             id INTEGER PRIMARY KEY,
             name TEXT,
             age INTEGER,
+            gender TEXT,
             email TEXT,
             city TEXT,
             is_employee BOOLEAN,
@@ -59,7 +68,7 @@ def insert_random_users(cursor, num_users):
     user_data = []
 
     for _ in range(num_users):
-        name = generate_random_name()
+        name, gender = generate_random_name_and_gender()
         age = generate_random_age()
         email = generate_random_email(name)
         city = generate_random_city()
@@ -67,12 +76,12 @@ def insert_random_users(cursor, num_users):
         phone_number = generate_random_phone_number()
         join_date = generate_random_join_date()
 
-        user_data.append((name, age, email, city, is_employee, phone_number, join_date))
+        user_data.append((name, age, gender, email, city, is_employee, phone_number, join_date))
 
     # Insert data in a single batch using the executemany() method
     cursor.executemany("""
-        INSERT INTO users (name, age, email, city, is_employee, phone_number, join_date)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO users (name, age, gender, email, city, is_employee, phone_number, join_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     """, user_data)
 
 def main():
